@@ -1,0 +1,39 @@
+---
+- hosts: all 
+  gather_facts: False
+  connection: local
+
+  vars_files:
+    - ./vars/vars_file.yml
+
+  tasks:
+  - name: Gather Facts of all VMs in variable machines.
+    local_action:
+      module: vmware_vm_facts
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+    register: facts
+  - name: Verbose Virtual Machine and it's UUID.
+    debug: 
+        msg: "{{ item }}: {{ facts['virtual_machines']['%s'| format(item)]['uuid'] }}"
+    with_items: 
+    - "{{ machines }}"
+  - name: Remove all snapshot of all VM's found in variable machines.
+    local_action:
+      #module: vmware_guest_facts 
+      module: vmware_guest_snapshot
+      datacenter: "{{ datacenter }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      name: "{{ machines }}"
+      uuid: "{{ facts['virtual_machines']['%s'| format(item)]['uuid'] }}" 
+      state: remove_all 
+    with_items:
+    - "{{ machines }}"
+    register: vm
+  - name: Verbose remove snapshot task
+    debug: var=vm

@@ -1,0 +1,20 @@
+---
+
+- hosts: localhost
+  gather_facts: False
+  connection: local
+
+  tasks:
+  - name: Gather Facts of all VMs in variable machines.
+    local_action:
+      module: vmware_vm_facts
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+    register: facts
+
+  - name: Verbose output of action
+    debug:
+      var: facts.virtual_machines
+

@@ -1,0 +1,8 @@
+---
+  datacenter: ""
+  hostname: ""
+  username: ""
+  password: ""
+  snapshot_name: ""
+  snapshot_description: ""
+  machines: "{{ inventory_hostname }}"
