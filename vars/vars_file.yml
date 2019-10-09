@@ -1,6 +1,8 @@
 ---
   datacenter: "Chai Chee"
   hostname: "xsinvcenpap002.dfs"
+  username: "lbn_vk.sutraway@dfs"
+  password: "Harekrishna#253"
   snapshot_name: "test"
   snapshot_description: "testing"
   machines: "{{ inventory_hostname }}"
