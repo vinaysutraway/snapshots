@@ -1,8 +1,6 @@
 ---
   datacenter: "Chai Chee"
   hostname: "xsinvcenpap002.dfs"
-  username: ""
-  password: ""
   snapshot_name: "test"
   snapshot_description: "testing"
   machines: "{{ inventory_hostname }}"
