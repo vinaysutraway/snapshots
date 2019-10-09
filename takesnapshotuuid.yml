@@ -11,8 +11,6 @@
     local_action:
       module: vmware_vm_facts
       hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
       validate_certs: False
     register: facts
   - name: Verbose Virtual Machine and it's UUID.
@@ -25,8 +23,6 @@
       module: vmware_guest_snapshot
       datacenter: "{{ datacenter }}"
       hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
       validate_certs: False
       name: "{{ machines }}"
       uuid: "{{ facts['virtual_machines']['%s'| format(item)]['uuid'] }}" 
