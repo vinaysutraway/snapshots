@@ -11,7 +11,7 @@
     local_action:
       module: vmware_vm_facts
       hostname: "{{ hostname }}"
-      username: "{{ username }}"
+      username: "lbn_vk.sutraway@dfs"
       password: "{{ password }}"
       validate_certs: False
     register: facts
