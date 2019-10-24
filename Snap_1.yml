@@ -1,3 +1,5 @@
+    ---
+    
     - name: Create Snapshots of Inventoried VMs in vCenter
 
         vmware_guest_snapshot:
