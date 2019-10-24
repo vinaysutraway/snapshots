@@ -1,0 +1,17 @@
+    - name: Create Snapshots of Inventoried VMs in vCenter
+
+        vmware_guest_snapshot:
+        username: "{{ lookup('env', 'VMWARE_USER') }}"
+        password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+        datacenter: "{{ lookup('env', 'VMWARE_DATACENTER') }}"
+        hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+        uuid: "{{ lookup('env', 'VMWARE_UUID') }}"
+        state: present
+        snapshot_name: ansibleTest2
+        description: Ansible Scheduled Snapshot
+        validate_certs: False
+        memory_dump: no
+        folder: \
+        name: "{{ lookup('env', 'VMWARE_NAME') }}"
+        use_instance_uuid: yes
+    delegate_to: localhost
