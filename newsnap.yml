@@ -1,0 +1,43 @@
+- name: Create snapshot
+## If the entire inventory snapshot is not intended, limit the guest snapshots based 
+## upon the 'Limit' variable in the job template.
+  hosts: all
+  gather_facts: False
+  vars:
+   timestamp: "{{lookup('pipe', 'date +%Y%m%d%H%M%S')}}"
+  connection: local
+  tasks:
+    - name: find guest's folder using name
+      vmware_guest_find:
+        username: "{{ lookup('env', 'VMWARE_USER') }}"
+        password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+        hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+        uuid: "{{ lookup('env', 'VMWARE_UUID') }}"
+        validate_certs: no
+        name: "{{ lookup('env', 'VMWARE_NAME') }}"
+        use_instance_uuid: yes
+        datacenter: "Chai chee"
+      register: vm_folder
+      delegate_to: localhost
+
+    - name: Take Snapshot of Guest VM
+      vmware_guest_snapshot:
+        validate_certs: false
+
+## Ensure to use your VMWare Cloud Credential (VMware vCenter) with the Job template. 
+## Currently the job template requires a Machine Credential, create a blank Machine Credential
+## to use in addition to the VMWare Cloud Credential.
+        username: "{{ lookup('env', 'VMWARE_USER') }}"
+        password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+        hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+        datacenter: Chai chee
+        folder: "{{vm_folder.folders[0]}}"
+        
+## For each Host in the Inventory, retrieves Name and UUID from the Hosts Variables.
+##      uuid: "{{ config.uuid }}"
+        name: "{{ lookup('env', 'VMWARE_NAME') }}"
+        use_instance_uuid: yes
+        state: present
+        snapshot_name: 'Snapshot_{{ timestamp }}'
+        description: Automated snapshot from Ansible.
+      delegate_to: localhost
